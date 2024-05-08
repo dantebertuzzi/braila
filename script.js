@@ -43,7 +43,7 @@ function updateTimer() {
     
     // Notificação sonora quando o timer zerar
     if (minutes === 0 && seconds === 0) {
-        playSound('https://github.com/dantebertuzzi/braila/blob/main/beep.mp3');
+        playSound('beep.mp3');
     }
 }
 

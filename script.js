@@ -1,6 +1,6 @@
 let timer;
-let studyTime = 25; // Tempo de estudo padrão em minutos
-let breakTime = 5;  // Tempo de pausa padrão em minutos
+let studyTime = 30; // Tempo de estudo padrão em minutos
+let breakTime = 10;  // Tempo de pausa padrão em minutos
 let minutes = studyTime;
 let seconds = 0;
 let isRunning = false;

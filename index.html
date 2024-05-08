@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>brai.la - Pomodoro Timer</title>
+  <meta name="description" content="Brai.la offers a streamlined Pomodoro experience to boost your productivity. With customizable timers and focused work sessions, Brai.la helps you manage your time effectively and accomplish your tasks efficiently.">
+  <meta name="keywords" content="pomodoro, productivity, time management, focus, work sessions, timer, task management, efficiency">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Brai.la - Pomodoro Timer for Productivity">
+  <meta property="og:description" content="Brai.la offers a streamlined Pomodoro experience to boost your productivity. With customizable timers and focused work sessions, Brai.la helps you manage your time effectively and accomplish your tasks efficiently.">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="bat"></div> <!-- Centered bat -->
+    <h1></h1>
+    <div id="timer" class="timer">
+        <div class="time-display">
+            <span id="minutes">25</span>:<span id="seconds">00</span>
+        </div>
+        <div class="progress-ring">
+            <svg class="progress-ring-circle" width="120" height="120">
+                <circle class="progress-ring-circle-bg" r="54" cx="60" cy="60" fill="transparent" stroke-width="6"></circle>
+                <circle class="progress-ring-circle-fg" r="54" cx="60" cy="60" fill="transparent" stroke-width="6" stroke-dasharray="339.292" stroke-dashoffset="0"></circle>
+            </svg>
+        </div>
+    </div>
+    <div id="buttons" class="buttons">
+        <button id="start"><i class="fas fa-play"></i></button>
+        <button id="stop"><i class="fas fa-stop"></i></button>
+        <button id="reset"><i class="fas fa-sync-alt"></i></button>
+    </div>
+    <div class="settings">
+      <br>
+      <h2></h2>
+    <strong><label for="study-time">Pomodoro</label><br></strong>
+      <input type="range" id="study-time" min="1" max="60" value="25"><br>
+      <span id="study-value">25</span> minutes
+      <br>
+      <br>
+      <strong><label for="break-time">Break Time</label><br></strong>
+      <input type="range" id="break-time" min="1" max="30" value="5"><br>
+      <span id="break-value">5</span> minutes
+    </div>
+  <div id="cycles" class="cycles">Completed cycles: 0</div>
+</div>
+  <script src="script.js"></script>
+</body>
+</html>

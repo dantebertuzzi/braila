@@ -67,7 +67,7 @@ class BrailaTimer {
     resetTimer() {
         this.stopTimer();
         this.cyclesCompleted = 0;
-        this.cyclesDisplay.textContent = `Ciclos completos: ${this.cyclesCompleted}`;
+        this.cyclesDisplay.textContent = `Completed cycles: ${this.cyclesCompleted}`;
         document.body.classList.remove('finished-background');
         this.startButton.innerHTML = '<i class="fas fa-play"></i>'; // Atualiza o ícone do botão para start
     }
@@ -95,7 +95,7 @@ class BrailaTimer {
                 this.minutes = this.breakTime;
                 this.isBreak = true;
                 this.cyclesCompleted++;
-                this.cyclesDisplay.textContent = `Ciclos completos: ${this.cyclesCompleted}`;
+                this.cyclesDisplay.textContent = `Completed cycles: ${this.cyclesCompleted}`;
                 document.body.classList.add('finished-background');
             }
             this.playSound('beep.mp3');

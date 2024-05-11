@@ -42,30 +42,6 @@ h1 {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.7);
 }
 
-.progress-ring {
-    position: absolute;
-    top: 40px; /* Posiciona o anel abaixo do display de tempo */
-    left: 0;
-    width: 120px;
-    height: 120px;
-    z-index: 1; /* Coloca o anel de progresso atrás do display de tempo */
-}
-
-.progress-ring-circle {
-    transform: rotate(-90deg);
-}
-
-.progress-ring-circle-bg {
-    stroke: #202020;
-}
-
-.progress-ring-circle-fg {
-    stroke: #5822d4;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.3s;
-}
-
-
 .buttons {
     margin-top: 20px;
 }

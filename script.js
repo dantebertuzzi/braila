@@ -81,7 +81,7 @@ class BrailaTimer {
         this.startButton.innerHTML = '<i class="fas fa-play"></i>';
         this.stopButton.disabled = true;
     }
-    
+
     resetTimer() {
         this.stopTimer();
         this.cyclesCompleted = 0;
@@ -89,13 +89,13 @@ class BrailaTimer {
         document.body.classList.remove('finished-background');
         this.startButton.innerHTML = '<i class="fas fa-play"></i>';
     }
-    
+
     updateSettings() {
-        this.studyTime = parseInt(this.studyTimeInput.value);
-        this.breakTime = parseInt(this.breakTimeInput.value);
+        this.studyTime = parseInt(this.studyTimeInput.value) || 30;
+        this.breakTime = parseInt(this.breakTimeInput.value) || 10;
         this.studyValue.textContent = this.studyTime;
         this.breakValue.textContent = this.breakTime;
-        this.timerWorker.postMessage({ command: 'updateSettings', studyTime: this.studyTime });
+        this.timerWorker.postMessage({ command: 'updateSettings', studyTime: this.studyTime, breakTime: this.breakTime });
         if (!this.isRunning) {
             this.minutes = this.studyTime;
             this.seconds = 0;
@@ -115,6 +115,7 @@ class BrailaTimer {
             this.cyclesDisplay.textContent = `Completed cycles: ${this.cyclesCompleted}`;
             document.body.classList.add('finished-background');
         }
+        this.updateTimerDisplay();
         this.playSound('beep.mp3');
     }
 

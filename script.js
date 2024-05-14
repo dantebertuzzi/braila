@@ -1,6 +1,6 @@
 class BrailaTimer {
     constructor() {
-        this.timer = null;
+        this.timerWorker = new Worker('timerWorker.js');
         this.studyTime = 30; // Tempo de estudo padrão em minutos
         this.breakTime = 10;  // Tempo de pausa padrão em minutos
         this.minutes = this.studyTime;
@@ -27,6 +27,20 @@ class BrailaTimer {
 
         this.soundPlayed = false; // Adiciona uma flag para controlar se o som já foi reproduzido
 
+        this.timerWorker.onmessage = (e) => {
+            const data = e.data;
+            switch (data.type) {
+                case 'update':
+                    this.minutes = data.minutes;
+                    this.seconds = data.seconds;
+                    this.updateTimerDisplay();
+                    break;
+                case 'cycleComplete':
+                    this.handleCycleComplete();
+                    break;
+            }
+        };
+
         this.updateTimerDisplay();
     }
 
@@ -39,7 +53,11 @@ class BrailaTimer {
     }
 
     startTimer() {
-        this.timer = setInterval(() => this.updateTimer(), 1000);
+        this.timerWorker.postMessage({
+            command: 'start',
+            minutes: this.minutes,
+            seconds: this.seconds
+        });
         this.isRunning = true;
         this.startButton.innerHTML = '<i class="fas fa-pause"></i>';
         this.stopButton.disabled = false;
@@ -47,20 +65,20 @@ class BrailaTimer {
     }
 
     pauseTimer() {
-        clearInterval(this.timer);
+        this.timerWorker.postMessage({ command: 'pause' });
         this.isRunning = false;
         this.startButton.innerHTML = '<i class="fas fa-play"></i>';
         document.body.classList.add('paused-background');
     }
 
     stopTimer() {
-        clearInterval(this.timer);
+        this.timerWorker.postMessage({ command: 'stop', studyTime: this.studyTime });
         this.isRunning = false;
         this.minutes = this.studyTime;
         this.seconds = 0;
         this.isBreak = false;
         this.updateTimerDisplay();
-        this.startButton.innerHTML = '<i class="fas fa-play"></i>'; // Atualiza o ícone do botão para start
+        this.startButton.innerHTML = '<i class="fas fa-play"></i>';
         this.stopButton.disabled = true;
     }
     
@@ -69,15 +87,15 @@ class BrailaTimer {
         this.cyclesCompleted = 0;
         this.cyclesDisplay.textContent = `Completed cycles: ${this.cyclesCompleted}`;
         document.body.classList.remove('finished-background');
-        this.startButton.innerHTML = '<i class="fas fa-play"></i>'; // Atualiza o ícone do botão para start
+        this.startButton.innerHTML = '<i class="fas fa-play"></i>';
     }
     
-
     updateSettings() {
         this.studyTime = parseInt(this.studyTimeInput.value);
         this.breakTime = parseInt(this.breakTimeInput.value);
         this.studyValue.textContent = this.studyTime;
         this.breakValue.textContent = this.breakTime;
+        this.timerWorker.postMessage({ command: 'updateSettings', studyTime: this.studyTime });
         if (!this.isRunning) {
             this.minutes = this.studyTime;
             this.seconds = 0;
@@ -85,36 +103,20 @@ class BrailaTimer {
         }
     }
 
-    updateTimer() {
-        if (this.minutes === 0 && this.seconds === 0) {
-            if (this.isBreak) {
-                this.minutes = this.studyTime;
-                this.isBreak = false;
-                document.body.classList.remove('finished-background');
-            } else {
-                this.minutes = this.breakTime;
-                this.isBreak = true;
-                this.cyclesCompleted++;
-                this.cyclesDisplay.textContent = `Completed cycles: ${this.cyclesCompleted}`;
-                document.body.classList.add('finished-background');
-            }
-            this.playSound('beep.mp3');
-        } else if (this.seconds === 0) {
-            this.minutes--;
-            this.seconds = 59;
+    handleCycleComplete() {
+        if (this.isBreak) {
+            this.minutes = this.studyTime;
+            this.isBreak = false;
+            document.body.classList.remove('finished-background');
         } else {
-            this.seconds--;
+            this.minutes = this.breakTime;
+            this.isBreak = true;
+            this.cyclesCompleted++;
+            this.cyclesDisplay.textContent = `Completed cycles: ${this.cyclesCompleted}`;
+            document.body.classList.add('finished-background');
         }
-        this.updateTimerDisplay();
+        this.playSound('beep.mp3');
     }
-    
-
-    playSound(soundFile) {
-        const audio = new Audio(soundFile);
-        audio.play();
-    }
-       
-    
 
     updateTimerDisplay() {
         const minutesDisplay = this.formatTime(this.minutes);
@@ -123,7 +125,7 @@ class BrailaTimer {
     }
 
     formatTime(time) {
-        return time < 10? `0${time}` : time;
+        return time < 10 ? `0${time}` : time;
     }
 
     playSound(soundFile) {

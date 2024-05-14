@@ -87,7 +87,21 @@ input[type="range"] {
 }
 
 .finished-background {
-    background-color: orangered; /* Define a cor de fundo como laranja quando o temporizador finalizar */
+  background: linear-gradient(270deg, #5822d4, #ff6b6b, #11998e, #38ef7d, #ffcc29, #ff6b6b, #5822d4);
+  background-size: 700% 700%;
+  animation: gradientBackground 20s ease infinite;
+}
+
+@keyframes gradientBackground {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
 }
 
 /* Bat */

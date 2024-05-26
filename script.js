@@ -116,7 +116,7 @@ class BrailaTimer {
             document.body.classList.add('finished-background');
         }
         this.updateTimerDisplay();
-        this.playSound('wolf.mp3');
+        this.playSound('beep.mp3');
     }
 
     updateTimerDisplay() {

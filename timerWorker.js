@@ -1,23 +1,28 @@
-let intervalId;
-let minutes;
-let seconds;
-let studyTime;
-let breakTime;
+let intervalId = null;
+let minutes = 0;
+let seconds = 0;
+let studyTime = 25; // valor padrão
+let breakTime = 5;  // valor padrão
 let isBreak = false;
 
 self.onmessage = function(e) {
     const data = e.data;
     switch(data.command) {
         case 'start':
+            if (intervalId) clearInterval(intervalId); // evita múltiplos intervalos
             startTimer(data.minutes, data.seconds);
             break;
         case 'pause':
             clearInterval(intervalId);
+            intervalId = null;
             break;
         case 'stop':
             clearInterval(intervalId);
+            intervalId = null;
             isBreak = false;
-            self.postMessage({ type: 'update', minutes: data.studyTime, seconds: 0 });
+            minutes = studyTime;
+            seconds = 0;
+            self.postMessage({ type: 'update', minutes, seconds });
             break;
         case 'updateSettings':
             studyTime = data.studyTime;
@@ -38,15 +43,13 @@ function startTimer(startMinutes, startSeconds) {
         if (seconds === 0) {
             if (minutes === 0) {
                 clearInterval(intervalId);
-                self.postMessage({ type: 'cycleComplete' });
+                intervalId = null;
+                self.postMessage({ type: 'cycleComplete', isBreak: !isBreak });
                 isBreak = !isBreak;
-                if (isBreak) {
-                    minutes = breakTime;
-                } else {
-                    minutes = studyTime;
-                }
+                minutes = isBreak ? breakTime : studyTime;
                 seconds = 0;
-                startTimer(minutes, seconds);
+                // O timer só reinicia se desejar, senão remova a linha abaixo
+                // startTimer(minutes, seconds);
             } else {
                 minutes--;
                 seconds = 59;
@@ -54,6 +57,6 @@ function startTimer(startMinutes, startSeconds) {
         } else {
             seconds--;
         }
-        self.postMessage({ type: 'update', minutes: minutes, seconds: seconds });
+        self.postMessage({ type: 'update', minutes, seconds });
     }, 1000);
 }

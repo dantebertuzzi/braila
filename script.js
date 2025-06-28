@@ -25,8 +25,6 @@ class BrailaTimer {
         this.studyTimeInput.addEventListener('input', () => this.updateSettings());
         this.breakTimeInput.addEventListener('input', () => this.updateSettings());
 
-        this.soundPlayed = false; // Adiciona uma flag para controlar se o som já foi reproduzido
-
         this.timerWorker.onmessage = (e) => {
             const data = e.data;
             switch (data.type) {
@@ -36,7 +34,7 @@ class BrailaTimer {
                     this.updateTimerDisplay();
                     break;
                 case 'cycleComplete':
-                    this.handleCycleComplete();
+                    this.handleCycleComplete(data.isBreak);
                     break;
             }
         };
@@ -103,20 +101,22 @@ class BrailaTimer {
         }
     }
 
-    handleCycleComplete() {
+    handleCycleComplete(isBreakFromWorker) {
+        this.isBreak = isBreakFromWorker;
         if (this.isBreak) {
-            this.minutes = this.studyTime;
-            this.isBreak = false;
-            document.body.classList.remove('finished-background');
-        } else {
             this.minutes = this.breakTime;
-            this.isBreak = true;
             this.cyclesCompleted++;
             this.cyclesDisplay.textContent = `Completed cycles: ${this.cyclesCompleted}`;
             document.body.classList.add('finished-background');
+            this.playSound('wolf.mp3'); // Toca o som do lobo ao entrar no break
+        } else {
+            this.minutes = this.studyTime;
+            document.body.classList.remove('finished-background');
+            this.playSound('beep.mp3'); // Toca beep ao voltar para estudo
         }
+        this.seconds = 0;
         this.updateTimerDisplay();
-        this.playSound('beep.mp3');
+        this.startTimer(); // Reinicia automaticamente o próximo ciclo
     }
 
     updateTimerDisplay() {

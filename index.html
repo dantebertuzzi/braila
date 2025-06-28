@@ -3,20 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>brai.la - Timer</title>
-  <meta name="description" content="Brai.la offers a streamlined experience to boost your productivity. With customizable timers and focused work sessions, Brai.la helps you manage your time effectively and accomplish your tasks efficiently.">
-  <meta name="keywords" content=" productivity, time management, focus, work sessions, timer, task management, efficiency">
+  <title>Brai.la - Productivity Timer & Focus Sessions</title>
+  <meta name="description" content="Boost your productivity with Brai.la's customizable Pomodoro timer. Manage your study and break sessions, track cycles, and stay focused with a minimalist interface.">
+  <meta name="keywords" content="productivity, pomodoro, timer, focus, study, break, task management, time management, work sessions, efficiency, braila">
+  <meta name="author" content="Brai.la">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Brai.la - Timer for Productivity">
-  <meta property="og:description" content="Brai.la offers a streamlined experience to boost your productivity. With customizable timers and focused work sessions, Brai.la helps you manage your time effectively and accomplish your tasks efficiently.">
+  <meta property="og:title" content="Brai.la - Productivity Timer & Focus Sessions">
+  <meta property="og:description" content="Boost your productivity with Brai.la's customizable Pomodoro timer. Manage your study and break sessions, track cycles, and stay focused with a minimalist interface.">
+  <meta property="og:url" content="https://brai.la/">
+  <meta property="og:image" content="https://brai.la/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Brai.la - Productivity Timer & Focus Sessions">
+  <meta name="twitter:description" content="Boost your productivity with Brai.la's customizable Pomodoro timer. Manage your study and break sessions, track cycles, and stay focused with a minimalist interface.">
+  <meta name="twitter:image" content="https://brai.la/og-image.png">
+  <link rel="canonical" href="https://brai.la/">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <div class="bat"></div> <!-- Centered bat -->
-    <h1></h1>
+    <div class="bat"></div>
+    <h1 class="visually-hidden">Brai.la Productivity Timer</h1>
     <div id="timer" class="timer">
         <div class="time-display">
             <span id="minutes">30</span>:<span id="seconds">00</span>
@@ -29,8 +37,8 @@
     </div>
     <div class="settings">
       <br>
-      <h2></h2>
-    <strong><label for="study-time">Time</label><br></strong>
+      <h2>Timer Settings</h2>
+      <strong><label for="study-time">Study Time</label><br></strong>
       <input type="range" id="study-time" min="1" max="60" value="30"><br>
       <span id="study-value">30</span> minutes
       <br>
@@ -39,8 +47,24 @@
       <input type="range" id="break-time" min="1" max="30" value="10"><br>
       <span id="break-value">10</span> minutes
     </div>
-  <div id="cycles" class="cycles">Completed cycles: 0</div>
-</div>
+    <div id="cycles" class="cycles">Completed cycles: 0</div>
+  </div>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Brai.la Productivity Timer",
+    "url": "https://brai.la/",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "All",
+    "description": "Boost your productivity with Brai.la's customizable Pomodoro timer. Manage your study and break sessions, track cycles, and stay focused with a minimalist interface.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
   <script src="script.js"></script>
 </body>
 </html>

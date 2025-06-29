@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Night City Background</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: linear-gradient(180deg, #0a0a0f 0%, #151520 20%, #1a1a2e 40%, #16213e 60%, #0f2027 80%, #0a0a0f 100%);
+            height: 100vh;
+            position: relative;
+        }
+
+        .pixel-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        /* Estrelas Aprimoradas */
+        .star {
+            position: absolute;
+            background: white;
+            width: 2px;
+            height: 2px;
+            animation: twinkle 3s infinite;
+            box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .star.big {
+            width: 3px;
+            height: 3px;
+            animation: twinkle 4s infinite;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .star.bright {
+            width: 2px;
+            height: 2px;
+            background: #ffffaa;
+            box-shadow: 0 0 6px rgba(255, 255, 170, 0.9);
+            animation: brightTwinkle 2s infinite;
+        }
+
+        .star.cross {
+            background: transparent;
+            position: relative;
+            box-shadow: none;
+        }
+
+        .star.cross::before,
+        .star.cross::after {
+            content: '';
+            position: absolute;
+            background: white;
+            box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+        }
+
+        .star.cross::before {
+            width: 12px;
+            height: 2px;
+            top: 1px;
+            left: -4px;
+        }
+
+        .star.cross::after {
+            width: 2px;
+            height: 12px;
+            top: -4px;
+            left: 1px;
+        }
+
+        .star.cross.big::before {
+            width: 16px;
+            height: 3px;
+            top: 1px;
+            left: -6px;
+        }
+
+        .star.cross.big::after {
+            width: 3px;
+            height: 16px;
+            top: -6px;
+            left: 1px;
+        }
+
+        .star.distant {
+            width: 1px;
+            height: 1px;
+            opacity: 0.6;
+            animation: distantTwinkle 5s infinite;
+        }
+
+        .star.colorful {
+            animation: colorShift 6s infinite;
+        }
+
+        /* Nuvens Pixelizadas */
+        .cloud {
+            position: absolute;
+            animation: float 25s infinite linear;
+            image-rendering: pixelated;
+        }
+
+        .cloud-pixel {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(60, 60, 80, 0.7);
+        }
+
+        .cloud.dark .cloud-pixel {
+            background: rgba(40, 40, 60, 0.6);
+        }
+
+        .cloud.light .cloud-pixel {
+            background: rgba(80, 80, 100, 0.8);
+        }
+
+
+
+        /* Animações Aprimoradas */
+        @keyframes twinkle {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+            25% { 
+                opacity: 0.7; 
+                transform: scale(0.8);
+            }
+            50% { 
+                opacity: 0.3; 
+                transform: scale(0.6);
+            }
+            75% { 
+                opacity: 0.8; 
+                transform: scale(0.9);
+            }
+        }
+
+        @keyframes brightTwinkle {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% { 
+                opacity: 0.4; 
+                transform: scale(1.2);
+                filter: brightness(1.5);
+            }
+        }
+
+        @keyframes distantTwinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes colorShift {
+            0% { filter: hue-rotate(0deg); }
+            33% { filter: hue-rotate(60deg); }
+            66% { filter: hue-rotate(240deg); }
+            100% { filter: hue-rotate(0deg); }
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(calc(100vw + 100px)); }
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="pixel-container">
+        <!-- Apenas céu, estrelas e nuvens -->
+    </div>
+
+    <script>
+        // Função para criar estrelas aprimoradas
+        function createStars() {
+            const container = document.querySelector('.pixel-container');
+            
+            // Criar diferentes tipos de estrelas
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const rand = Math.random();
+                
+                // Tipos de estrelas com probabilidades diferentes
+                if (rand > 0.85) {
+                    star.classList.add('cross');
+                    if (Math.random() > 0.7) star.classList.add('big');
+                } else if (rand > 0.75) {
+                    star.classList.add('bright');
+                } else if (rand > 0.65) {
+                    star.classList.add('big');
+                } else if (rand > 0.35) {
+                    star.classList.add('distant');
+                }
+                
+                // Algumas estrelas coloridas raras
+                if (Math.random() > 0.95) {
+                    star.classList.add('colorful');
+                }
+                
+                // Posicionamento com mais estrelas no topo
+                const yPosition = Math.pow(Math.random(), 2) * 70; // Concentra mais estrelas no topo
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = yPosition + '%';
+                
+                // Delays variados para animações mais naturais
+                star.style.animationDelay = Math.random() * 6 + 's';
+                
+                // Algumas estrelas com durações diferentes
+                if (Math.random() > 0.8) {
+                    star.style.animationDuration = (2 + Math.random() * 4) + 's';
+                }
+                
+                container.appendChild(star);
+            }
+            
+            // Criar constelações
+            createConstellations();
+        }
+
+        // Função para criar pequenas constelações
+        function createConstellations() {
+            const container = document.querySelector('.pixel-container');
+            const constellations = [
+                // Constelação 1 - Triângulo
+                [
+                    {x: 20, y: 15},
+                    {x: 25, y: 20},
+                    {x: 30, y: 15}
+                ],
+                // Constelação 2 - Dipper pequeno
+                [
+                    {x: 60, y: 25},
+                    {x: 65, y: 23},
+                    {x: 70, y: 25},
+                    {x: 73, y: 28},
+                    {x: 68, y: 30},
+                    {x: 63, y: 28},
+                    {x: 62, y: 26}
+                ],
+                // Constelação 3 - Cruz
+                [
+                    {x: 80, y: 10},
+                    {x: 83, y: 13},
+                    {x: 86, y: 10},
+                    {x: 83, y: 7},
+                    {x: 83, y: 13}
+                ]
+            ];
+            
+            constellations.forEach(constellation => {
+                constellation.forEach(point => {
+                    const star = document.createElement('div');
+                    star.className = 'star bright';
+                    star.style.left = point.x + '%';
+                    star.style.top = point.y + '%';
+                    star.style.animationDelay = Math.random() * 3 + 's';
+                    container.appendChild(star);
+                });
+            });
+        }
+
+        // Função para criar nuvens pixelizadas
+        function createPixelClouds() {
+            const container = document.querySelector('.pixel-container');
+            
+            // Padrões de nuvens em pixel art
+            const cloudPatterns = [
+                // Padrão 1 - Nuvem pequena
+                [
+                    "  ████  ",
+                    " ██████ ",
+                    "████████",
+                    " ██████ "
+                ],
+                // Padrão 2 - Nuvem média
+                [
+                    "   ██████   ",
+                    " ██████████ ",
+                    "█████████████",
+                    "█████████████",
+                    " ███████████ ",
+                    "  █████████  "
+                ],
+                // Padrão 3 - Nuvem grande
+                [
+                    "    ████████    ",
+                    "  ████████████  ",
+                    " ████████████████ ",
+                    "██████████████████",
+                    "██████████████████",
+                    " ██████████████████",
+                    "  ████████████████ ",
+                    "   ██████████████  ",
+                    "    ████████████   "
+                ],
+                // Padrão 4 - Nuvem alongada
+                [
+                    " ██████████████ ",
+                    "█████████████████",
+                    "█████████████████",
+                    " ███████████████ ",
+                    "  █████████████  "
+                ]
+            ];
+            
+            for (let i = 0; i < 6; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = 'cloud';
+                
+                // Tipos diferentes de nuvens
+                if (Math.random() > 0.5) cloud.classList.add('dark');
+                if (Math.random() > 0.7) cloud.classList.add('light');
+                
+                const pattern = cloudPatterns[Math.floor(Math.random() * cloudPatterns.length)];
+                
+                // Criar pixels da nuvem
+                pattern.forEach((row, y) => {
+                    for (let x = 0; x < row.length; x++) {
+                        if (row[x] === '█') {
+                            const pixel = document.createElement('div');
+                            pixel.className = 'cloud-pixel';
+                            pixel.style.left = (x * 4) + 'px';
+                            pixel.style.top = (y * 4) + 'px';
+                            cloud.appendChild(pixel);
+                        }
+                    }
+                });
+                
+                cloud.style.top = Math.random() * 50 + '%';
+                cloud.style.left = -200 + 'px';
+                cloud.style.animationDelay = Math.random() * 25 + 's';
+                cloud.style.animationDuration = (20 + Math.random() * 15) + 's';
+                
+                container.appendChild(cloud);
+            }
+        }
+
+
+
+        // Inicializar tudo
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            createPixelClouds();
+            
+            // Adicionar mais nuvens periodicamente
+            setInterval(function() {
+                if (document.querySelectorAll('.cloud').length < 6) {
+                    createPixelClouds();
+                }
+            }, 15000);
+        });
+
+        // Efeito de paralaxe com mouse
+        document.addEventListener('mousemove', function(e) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                const speed = 0.5 + (index % 3) * 0.2;
+                star.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px)`;
+            });
+            
+            const clouds = document.querySelectorAll('.cloud');
+            
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            stars.forEach((star, index) => {
+                const speed = 0.5 + (index % 3) * 0.2;
+                star.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px)`;
+            });
+            
+            clouds.forEach((cloud, index) => {
+                const speed = 0.3 + (index % 2) * 0.1;
+                cloud.style.transform += ` translate(${mouseX * speed}px, ${mouseY * speed * 0.5}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

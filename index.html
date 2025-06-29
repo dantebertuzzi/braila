@@ -20,51 +20,360 @@
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* --- BACKGROUND.HTML STYLES --- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        overflow: hidden;
+        background: linear-gradient(180deg,
+          #0a0a0f 0%,
+          #121018 40%,
+          #1a1325 60%,
+          #2a1b3d 75%,
+          #3a2252 90%,
+          #1a1128 100%);
+        height: 100vh;
+        position: relative;
+    }
+    .pixel-container {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 0;
+        image-rendering: pixelated;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: crisp-edges;
+    }
+    .star {
+        position: absolute;
+        background: white;
+        width: 2px;
+        height: 2px;
+        animation: twinkle 3s infinite;
+        box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+    }
+    .star.big {
+        width: 3px;
+        height: 3px;
+        animation: twinkle 4s infinite;
+        box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+    }
+    .star.bright {
+        width: 2px;
+        height: 2px;
+        background: #ffffaa;
+        box-shadow: 0 0 6px rgba(255, 255, 170, 0.9);
+        animation: brightTwinkle 2s infinite;
+    }
+    .star.cross {
+        background: transparent;
+        position: relative;
+        box-shadow: none;
+    }
+    .star.cross::before,
+    .star.cross::after {
+        content: '';
+        position: absolute;
+        background: white;
+        box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+    }
+    .star.cross::before {
+        width: 12px;
+        height: 2px;
+        top: 1px;
+        left: -4px;
+    }
+    .star.cross::after {
+        width: 2px;
+        height: 12px;
+        top: -4px;
+        left: 1px;
+    }
+    .star.cross.big::before {
+        width: 16px;
+        height: 3px;
+        top: 1px;
+        left: -6px;
+    }
+    .star.cross.big::after {
+        width: 3px;
+        height: 16px;
+        top: -6px;
+        left: 1px;
+    }
+    .star.distant {
+        width: 1px;
+        height: 1px;
+        opacity: 0.6;
+        animation: distantTwinkle 5s infinite;
+    }
+    .star.colorful {
+        animation: colorShift 6s infinite;
+    }
+    .cloud {
+        position: absolute;
+        animation: float 25s infinite linear;
+        image-rendering: pixelated;
+    }
+    .cloud-pixel {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(60, 60, 80, 0.7);
+    }
+    .cloud.dark .cloud-pixel {
+        background: rgba(40, 40, 60, 0.6);
+    }
+    .cloud.light .cloud-pixel {
+        background: rgba(80, 80, 100, 0.8);
+    }
+    @keyframes twinkle {
+        0%, 100% { opacity: 1; transform: scale(1);}
+        25% { opacity: 0.7; transform: scale(0.8);}
+        50% { opacity: 0.3; transform: scale(0.6);}
+        75% { opacity: 0.8; transform: scale(0.9);}
+    }
+    @keyframes brightTwinkle {
+        0%, 100% { opacity: 1; transform: scale(1); filter: brightness(1);}
+        50% { opacity: 0.4; transform: scale(1.2); filter: brightness(1.5);}
+    }
+    @keyframes distantTwinkle {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.8; }
+    }
+    @keyframes colorShift {
+        0% { filter: hue-rotate(0deg);}
+        33% { filter: hue-rotate(60deg);}
+        66% { filter: hue-rotate(240deg);}
+        100% { filter: hue-rotate(0deg);}
+    }
+    @keyframes float {
+        0% { transform: translateX(-100px);}
+        100% { transform: translateX(calc(100vw + 100px));}
+    }
+    /* --- END BACKGROUND.HTML STYLES --- */
+    .container {
+      position: relative;
+      z-index: 1;
+    }
+    .settings h2 {
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="bat"></div>
-    <h1 class="visually-hidden">Brai.la Productivity Timer</h1>
-    <div id="timer" class="timer">
-        <div class="time-display">
-            <span id="minutes">30</span>:<span id="seconds">00</span>
+    <!-- Pixel night background -->
+    <div class="pixel-container"></div>
+    <!-- Poste de luz central -->
+    <div class="lamppost">
+        <div class="lamp-pole">
+            <div class="lamp-head"></div>
+            <div class="lamp-light"></div>
         </div>
     </div>
-    <div id="buttons" class="buttons">
-        <button id="start"><i class="fas fa-play"></i></button>
-        <button id="stop"><i class="fas fa-stop"></i></button>
-        <button id="reset"><i class="fas fa-sync-alt"></i></button>
+    <div class="container">
+      <div class="bat" style="position: absolute; top: -280px; left: 50%; z-index: 2;"></div>
+      <h1 class="visually-hidden">Brai.la Productivity Timer</h1>
+      <div id="timer" class="timer">
+          <div class="time-display">
+              <span id="minutes">30</span>:<span id="seconds">00</span>
+          </div>
+      </div>
+      <div id="buttons" class="buttons">
+          <button id="start"><i class="fas fa-play"></i></button>
+          <button id="stop"><i class="fas fa-stop"></i></button>
+          <button id="reset"><i class="fas fa-sync-alt"></i></button>
+      </div>
+      <div class="settings">
+        <br>
+        <h2>Timer Settings</h2>
+        <strong><label for="study-time">Study Time</label><br></strong>
+        <input type="range" id="study-time" min="1" max="60" value="30"><br>
+        <span id="study-value">30</span> minutes
+        <br>
+        <br>
+        <strong><label for="break-time">Break Time</label><br></strong>
+        <input type="range" id="break-time" min="1" max="30" value="10"><br>
+        <span id="break-value">10</span> minutes
+      </div>
+      <div id="cycles" class="cycles">Completed cycles: 0</div>
     </div>
-    <div class="settings">
-      <br>
-      <h2>Timer Settings</h2>
-      <strong><label for="study-time">Study Time</label><br></strong>
-      <input type="range" id="study-time" min="1" max="60" value="30"><br>
-      <span id="study-value">30</span> minutes
-      <br>
-      <br>
-      <strong><label for="break-time">Break Time</label><br></strong>
-      <input type="range" id="break-time" min="1" max="30" value="10"><br>
-      <span id="break-value">10</span> minutes
-    </div>
-    <div id="cycles" class="cycles">Completed cycles: 0</div>
-  </div>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Brai.la Productivity Timer",
-    "url": "https://brai.la/",
-    "applicationCategory": "ProductivityApplication",
-    "operatingSystem": "All",
-    "description": "Boost your productivity with Brai.la's customizable Pomodoro timer. Manage your study and break sessions, track cycles, and stay focused with a minimalist interface.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+    <script>
+      // --- BACKGROUND.HTML SCRIPT ---
+      function createStars() {
+          const container = document.querySelector('.pixel-container');
+          for (let i = 0; i < 80; i++) {
+              const star = document.createElement('div');
+              star.className = 'star';
+              const rand = Math.random();
+              if (rand > 0.85) {
+                  star.classList.add('cross');
+                  if (Math.random() > 0.7) star.classList.add('big');
+              } else if (rand > 0.75) {
+                  star.classList.add('bright');
+              } else if (rand > 0.65) {
+                  star.classList.add('big');
+              } else if (rand > 0.35) {
+                  star.classList.add('distant');
+              }
+              if (Math.random() > 0.95) {
+                  star.classList.add('colorful');
+              }
+              const yPosition = Math.pow(Math.random(), 2) * 70;
+              star.style.left = Math.random() * 100 + '%';
+              star.style.top = yPosition + '%';
+              star.style.animationDelay = Math.random() * 6 + 's';
+              if (Math.random() > 0.8) {
+                  star.style.animationDuration = (2 + Math.random() * 4) + 's';
+              }
+              container.appendChild(star);
+          }
+          createConstellations();
+      }
+      function createConstellations() {
+          const container = document.querySelector('.pixel-container');
+          const constellations = [
+              [
+                  {x: 20, y: 15},
+                  {x: 25, y: 20},
+                  {x: 30, y: 15}
+              ],
+              [
+                  {x: 60, y: 25},
+                  {x: 65, y: 23},
+                  {x: 70, y: 25},
+                  {x: 73, y: 28},
+                  {x: 68, y: 30},
+                  {x: 63, y: 28},
+                  {x: 62, y: 26}
+              ],
+              [
+                  {x: 80, y: 10},
+                  {x: 83, y: 13},
+                  {x: 86, y: 10},
+                  {x: 83, y: 7},
+                  {x: 83, y: 13}
+              ]
+          ];
+          constellations.forEach(constellation => {
+              constellation.forEach(point => {
+                  const star = document.createElement('div');
+                  star.className = 'star bright';
+                  star.style.left = point.x + '%';
+                  star.style.top = point.y + '%';
+                  star.style.animationDelay = Math.random() * 3 + 's';
+                  container.appendChild(star);
+              });
+          });
+      }
+      function createPixelClouds() {
+          const container = document.querySelector('.pixel-container');
+          const cloudPatterns = [
+              [
+                  "  ████  ",
+                  " ██████ ",
+                  "████████",
+                  " ██████ "
+              ],
+              [
+                  "   ██████   ",
+                  " ██████████ ",
+                  "█████████████",
+                  "█████████████",
+                  " ███████████ ",
+                  "  █████████  "
+              ],
+              [
+                  "    ████████    ",
+                  "  ████████████  ",
+                  " ████████████████ ",
+                  "██████████████████",
+                  "██████████████████",
+                  " ██████████████████",
+                  "  ████████████████ ",
+                  "   ██████████████  ",
+                  "    ████████████   "
+              ],
+              [
+                  " ██████████████ ",
+                  "█████████████████",
+                  "█████████████████",
+                  " ███████████████ ",
+                  "  █████████████  "
+              ]
+          ];
+          for (let i = 0; i < 6; i++) {
+              const cloud = document.createElement('div');
+              cloud.className = 'cloud';
+              if (Math.random() > 0.5) cloud.classList.add('dark');
+              if (Math.random() > 0.7) cloud.classList.add('light');
+              const pattern = cloudPatterns[Math.floor(Math.random() * cloudPatterns.length)];
+              pattern.forEach((row, y) => {
+                  for (let x = 0; x < row.length; x++) {
+                      if (row[x] === '█') {
+                          const pixel = document.createElement('div');
+                          pixel.className = 'cloud-pixel';
+                          pixel.style.left = (x * 4) + 'px';
+                          pixel.style.top = (y * 4) + 'px';
+                          cloud.appendChild(pixel);
+                      }
+                  }
+              });
+              cloud.style.top = Math.random() * 50 + '%';
+              cloud.style.left = -200 + 'px';
+              cloud.style.animationDelay = Math.random() * 25 + 's';
+              cloud.style.animationDuration = (20 + Math.random() * 15) + 's';
+              container.appendChild(cloud);
+          }
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+          createStars();
+          createPixelClouds();
+          setInterval(function() {
+              if (document.querySelectorAll('.cloud').length < 6) {
+                  createPixelClouds();
+              }
+          }, 15000);
+      });
+      document.addEventListener('mousemove', function(e) {
+          const stars = document.querySelectorAll('.star');
+          const mouseX = e.clientX / window.innerWidth;
+          const mouseY = e.clientY / window.innerHeight;
+          stars.forEach((star, index) => {
+              const speed = 0.5 + (index % 3) * 0.2;
+              star.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px)`;
+          });
+          const clouds = document.querySelectorAll('.cloud');
+          clouds.forEach((cloud, index) => {
+              const speed = 0.3 + (index % 2) * 0.1;
+              cloud.style.transform += ` translate(${mouseX * speed}px, ${mouseY * speed * 0.5}px)`;
+          });
+      });
+      // --- END BACKGROUND.HTML SCRIPT ---
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Brai.la Productivity Timer",
+      "url": "https://brai.la/",
+      "applicationCategory": "ProductivityApplication",
+      "operatingSystem": "All",
+      "description": "Boost your productivity with Brai.la's customizable Pomodoro timer. Manage your study and break sessions, track cycles, and stay focused with a minimalist interface.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
     }
-  }
-  </script>
-  <script src="script.js"></script>
+    </script>
+    <script src="script.js"></script>
 </body>
 </html>

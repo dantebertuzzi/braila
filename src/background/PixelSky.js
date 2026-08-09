@@ -1,19 +1,16 @@
-import { STAR_COUNT, CLOUD_COUNT, MIN_CLOUDS, CLOUD_RESPAWN_CHECK_MS, CONSTELLATIONS, CLOUD_PATTERNS } from './pixelSky.config.js';
+import { STAR_COUNT, CLOUD_COUNT, CONSTELLATIONS, CLOUD_PATTERNS } from './pixelSky.config.js';
 
 export class PixelSky {
   constructor(container) {
     this.container = container;
+    this.pendingMouseEvent = null;
+    this.mouseRafId = null;
   }
 
   mount() {
     this.#createStars();
     this.#createPixelClouds();
-    setInterval(() => {
-      if (this.container.querySelectorAll('.cloud').length < MIN_CLOUDS) {
-        this.#createPixelClouds();
-      }
-    }, CLOUD_RESPAWN_CHECK_MS);
-    document.addEventListener('mousemove', (e) => this.#onMouseMove(e));
+    document.addEventListener('mousemove', (e) => this.#queueMouseMove(e));
   }
 
   #createStars() {
@@ -85,6 +82,15 @@ export class PixelSky {
     }
   }
 
+  #queueMouseMove(e) {
+    this.pendingMouseEvent = e;
+    if (this.mouseRafId) return;
+    this.mouseRafId = requestAnimationFrame(() => {
+      this.#onMouseMove(this.pendingMouseEvent);
+      this.mouseRafId = null;
+    });
+  }
+
   #onMouseMove(e) {
     const mouseX = e.clientX / window.innerWidth;
     const mouseY = e.clientY / window.innerHeight;
@@ -94,7 +100,7 @@ export class PixelSky {
     });
     this.container.querySelectorAll('.cloud').forEach((cloud, index) => {
       const speed = 0.3 + (index % 2) * 0.1;
-      cloud.style.transform += ` translate(${mouseX * speed}px, ${mouseY * speed * 0.5}px)`;
+      cloud.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed * 0.5}px)`;
     });
   }
 }

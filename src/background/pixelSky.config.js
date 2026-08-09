@@ -1,7 +1,5 @@
 export const STAR_COUNT = 80;
 export const CLOUD_COUNT = 6;
-export const MIN_CLOUDS = 6;
-export const CLOUD_RESPAWN_CHECK_MS = 15000;
 
 export const CONSTELLATIONS = [
   [

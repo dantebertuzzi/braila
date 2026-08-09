@@ -1,0 +1,50 @@
+@font-face {
+  font-family: "Digital";
+  src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot");
+  src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot?#iefix") format("embedded-opentype"),
+       url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff2") format("woff2"),
+       url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff") format("woff"),
+       url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.ttf") format("truetype"),
+       url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.svg#Digital-7") format("svg");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+  color: #ffffff;
+  font-family: "Digital";
+  text-align: center;
+  overflow: hidden;
+  height: 100vh;
+  position: relative;
+  background: linear-gradient(180deg,
+    #0a0a0f 0%,
+    #121018 40%,
+    #1a1325 60%,
+    #2a1b3d 75%,
+    #3a2252 90%,
+    #1a1128 100%);
+}
+
+.container {
+    margin-top: 300px;
+    position: relative;
+    z-index: 1;
+}
+
+h1 {
+    color: #5822d4;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}

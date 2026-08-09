@@ -1,0 +1,76 @@
+.timer {
+    position: relative;
+    display: inline-block;
+}
+
+.time-display {
+    font-size: 48px;
+    color: #ffffff;
+    transition: color 0.3s;
+    z-index: 2; /* Coloca o display de tempo na frente */
+    position: relative;
+    top: -20px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 24px;
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.settings {
+    margin-top: 30px;
+}
+
+.settings h2 {
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+input[type="range"] {
+    width: 200px;
+    margin: 10px;
+}
+
+.cycles {
+    margin-top: 20px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+.finished-background {
+  background: linear-gradient(270deg, #5822d4, #ff6b6b, #11998e, #38ef7d, #ffcc29, #ff6b6b, #5822d4);
+  background-size: 700% 700%;
+  animation: gradientBackground 20s ease infinite;
+}
+
+@keyframes gradientBackground {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}

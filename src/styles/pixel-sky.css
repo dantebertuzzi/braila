@@ -1,0 +1,119 @@
+.pixel-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+.star {
+    position: absolute;
+    background: white;
+    width: 2px;
+    height: 2px;
+    animation: twinkle 3s infinite;
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+}
+.star.big {
+    width: 3px;
+    height: 3px;
+    animation: twinkle 4s infinite;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+}
+.star.bright {
+    width: 2px;
+    height: 2px;
+    background: #ffffaa;
+    box-shadow: 0 0 6px rgba(255, 255, 170, 0.9);
+    animation: brightTwinkle 2s infinite;
+}
+.star.cross {
+    background: transparent;
+    position: relative;
+    box-shadow: none;
+}
+.star.cross::before,
+.star.cross::after {
+    content: '';
+    position: absolute;
+    background: white;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+}
+.star.cross::before {
+    width: 12px;
+    height: 2px;
+    top: 1px;
+    left: -4px;
+}
+.star.cross::after {
+    width: 2px;
+    height: 12px;
+    top: -4px;
+    left: 1px;
+}
+.star.cross.big::before {
+    width: 16px;
+    height: 3px;
+    top: 1px;
+    left: -6px;
+}
+.star.cross.big::after {
+    width: 3px;
+    height: 16px;
+    top: -6px;
+    left: 1px;
+}
+.star.distant {
+    width: 1px;
+    height: 1px;
+    opacity: 0.6;
+    animation: distantTwinkle 5s infinite;
+}
+.star.colorful {
+    animation: colorShift 6s infinite;
+}
+.cloud {
+    position: absolute;
+    animation: float 25s infinite linear;
+    image-rendering: pixelated;
+}
+.cloud-pixel {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(60, 60, 80, 0.7);
+}
+.cloud.dark .cloud-pixel {
+    background: rgba(40, 40, 60, 0.6);
+}
+.cloud.light .cloud-pixel {
+    background: rgba(80, 80, 100, 0.8);
+}
+@keyframes twinkle {
+    0%, 100% { opacity: 1; transform: scale(1);}
+    25% { opacity: 0.7; transform: scale(0.8);}
+    50% { opacity: 0.3; transform: scale(0.6);}
+    75% { opacity: 0.8; transform: scale(0.9);}
+}
+@keyframes brightTwinkle {
+    0%, 100% { opacity: 1; transform: scale(1); filter: brightness(1);}
+    50% { opacity: 0.4; transform: scale(1.2); filter: brightness(1.5);}
+}
+@keyframes distantTwinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+@keyframes colorShift {
+    0% { filter: hue-rotate(0deg);}
+    33% { filter: hue-rotate(60deg);}
+    66% { filter: hue-rotate(240deg);}
+    100% { filter: hue-rotate(0deg);}
+}
+@keyframes float {
+    0% { transform: translateX(-100px);}
+    100% { transform: translateX(calc(100vw + 100px));}
+}

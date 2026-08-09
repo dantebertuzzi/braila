@@ -1,106 +1,154 @@
-// --- Pixel Night City Background ---
+// --- Pixel Night Sky Background ---
 function createStars() {
     const container = document.querySelector('.pixel-container');
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 80; i++) {
         const star = document.createElement('div');
         star.className = 'star';
-        if (Math.random() > 0.8) star.classList.add('big');
-        if (Math.random() > 0.9) star.classList.add('cross');
+        const rand = Math.random();
+        if (rand > 0.85) {
+            star.classList.add('cross');
+            if (Math.random() > 0.7) star.classList.add('big');
+        } else if (rand > 0.75) {
+            star.classList.add('bright');
+        } else if (rand > 0.65) {
+            star.classList.add('big');
+        } else if (rand > 0.35) {
+            star.classList.add('distant');
+        }
+        if (Math.random() > 0.95) {
+            star.classList.add('colorful');
+        }
+        const yPosition = Math.pow(Math.random(), 2) * 70;
         star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 60 + '%';
-        star.style.animationDelay = Math.random() * 2 + 's';
+        star.style.top = yPosition + '%';
+        star.style.animationDelay = Math.random() * 6 + 's';
+        if (Math.random() > 0.8) {
+            star.style.animationDuration = (2 + Math.random() * 4) + 's';
+        }
         container.appendChild(star);
     }
+    createConstellations();
 }
-function createClouds() {
+function createConstellations() {
     const container = document.querySelector('.pixel-container');
-    for (let i = 0; i < 8; i++) {
+    const constellations = [
+        [
+            {x: 20, y: 15},
+            {x: 25, y: 20},
+            {x: 30, y: 15}
+        ],
+        [
+            {x: 60, y: 25},
+            {x: 65, y: 23},
+            {x: 70, y: 25},
+            {x: 73, y: 28},
+            {x: 68, y: 30},
+            {x: 63, y: 28},
+            {x: 62, y: 26}
+        ],
+        [
+            {x: 80, y: 10},
+            {x: 83, y: 13},
+            {x: 86, y: 10},
+            {x: 83, y: 7},
+            {x: 83, y: 13}
+        ]
+    ];
+    constellations.forEach(constellation => {
+        constellation.forEach(point => {
+            const star = document.createElement('div');
+            star.className = 'star bright';
+            star.style.left = point.x + '%';
+            star.style.top = point.y + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            container.appendChild(star);
+        });
+    });
+}
+function createPixelClouds() {
+    const container = document.querySelector('.pixel-container');
+    const cloudPatterns = [
+        [
+            "  ████  ",
+            " ██████ ",
+            "████████",
+            " ██████ "
+        ],
+        [
+            "   ██████   ",
+            " ██████████ ",
+            "█████████████",
+            "█████████████",
+            " ███████████ ",
+            "  █████████  "
+        ],
+        [
+            "    ████████    ",
+            "  ████████████  ",
+            " ████████████████ ",
+            "██████████████████",
+            "██████████████████",
+            " ██████████████████",
+            "  ████████████████ ",
+            "   ██████████████  ",
+            "    ████████████   "
+        ],
+        [
+            " ██████████████ ",
+            "█████████████████",
+            "█████████████████",
+            " ███████████████ ",
+            "  █████████████  "
+        ]
+    ];
+    for (let i = 0; i < 6; i++) {
         const cloud = document.createElement('div');
         cloud.className = 'cloud';
-        if (Math.random() > 0.6) cloud.classList.add('pink');
-        if (Math.random() > 0.7) cloud.classList.add('orange');
-        const width = 80 + Math.random() * 120;
-        const height = 20 + Math.random() * 30;
-        cloud.style.width = width + 'px';
-        cloud.style.height = height + 'px';
-        cloud.style.top = Math.random() * 40 + '%';
-        cloud.style.left = -width + 'px';
-        cloud.style.animationDelay = Math.random() * 20 + 's';
-        cloud.style.animationDuration = (15 + Math.random() * 20) + 's';
-        container.appendChild(cloud);
-    }
-}
-function createBuildings() {
-    const container = document.querySelector('.pixel-container');
-    const buildingCount = 15;
-    for (let i = 0; i < buildingCount; i++) {
-        const building = document.createElement('div');
-        building.className = 'building';
-        const width = 40 + Math.random() * 80;
-        const height = 100 + Math.random() * 200;
-        building.style.width = width + 'px';
-        building.style.height = height + 'px';
-        building.style.left = (i * (100 / buildingCount)) + '%';
-        const windowsX = Math.floor(width / 15);
-        const windowsY = Math.floor(height / 20);
-        for (let x = 0; x < windowsX; x++) {
-            for (let y = 0; y < windowsY; y++) {
-                if (Math.random() > 0.3) {
-                    const window = document.createElement('div');
-                    window.className = 'window';
-                    if (Math.random() > 0.7) window.classList.add('off');
-                    window.style.left = (x * 15 + 5) + 'px';
-                    window.style.top = (y * 20 + 5) + 'px';
-                    window.style.animationDelay = Math.random() * 4 + 's';
-                    building.appendChild(window);
+        if (Math.random() > 0.5) cloud.classList.add('dark');
+        if (Math.random() > 0.7) cloud.classList.add('light');
+        const pattern = cloudPatterns[Math.floor(Math.random() * cloudPatterns.length)];
+        pattern.forEach((row, y) => {
+            for (let x = 0; x < row.length; x++) {
+                if (row[x] === '█') {
+                    const pixel = document.createElement('div');
+                    pixel.className = 'cloud-pixel';
+                    pixel.style.left = (x * 4) + 'px';
+                    pixel.style.top = (y * 4) + 'px';
+                    cloud.appendChild(pixel);
                 }
             }
-        }
-        container.appendChild(building);
-    }
-}
-function createTrees() {
-    const container = document.querySelector('.pixel-container');
-    for (let i = 0; i < 8; i++) {
-        const tree = document.createElement('div');
-        tree.className = 'tree';
-        const trunk = document.createElement('div');
-        trunk.className = 'tree-trunk';
-        const leaves = document.createElement('div');
-        leaves.className = 'tree-leaves';
-        tree.appendChild(trunk);
-        tree.appendChild(leaves);
-        tree.style.left = Math.random() * 100 + '%';
-        tree.style.zIndex = '-1';
-        container.appendChild(tree);
+        });
+        cloud.style.top = Math.random() * 50 + '%';
+        cloud.style.left = -200 + 'px';
+        cloud.style.animationDelay = Math.random() * 25 + 's';
+        cloud.style.animationDuration = (20 + Math.random() * 15) + 's';
+        container.appendChild(cloud);
     }
 }
 document.addEventListener('DOMContentLoaded', function() {
     createStars();
-    createClouds();
-    createBuildings();
-    createTrees();
+    createPixelClouds();
     setInterval(function() {
-        if (document.querySelectorAll('.cloud').length < 8) {
-            createClouds();
+        if (document.querySelectorAll('.cloud').length < 6) {
+            createPixelClouds();
         }
-    }, 10000);
+    }, 15000);
 });
 document.addEventListener('mousemove', function(e) {
     const stars = document.querySelectorAll('.star');
-    const clouds = document.querySelectorAll('.cloud');
     const mouseX = e.clientX / window.innerWidth;
     const mouseY = e.clientY / window.innerHeight;
     stars.forEach((star, index) => {
         const speed = 0.5 + (index % 3) * 0.2;
         star.style.transform = `translate(${mouseX * speed}px, ${mouseY * speed}px)`;
     });
+    const clouds = document.querySelectorAll('.cloud');
     clouds.forEach((cloud, index) => {
         const speed = 0.3 + (index % 2) * 0.1;
         cloud.style.transform += ` translate(${mouseX * speed}px, ${mouseY * speed * 0.5}px)`;
     });
 });
-// --- Fim Pixel Night City Background ---
+// --- Fim Pixel Night Sky Background ---
 
 class BrailaTimer {
     constructor() {

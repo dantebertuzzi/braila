@@ -20,6 +20,7 @@ self.onmessage = function(e) {
             clearInterval(intervalId);
             intervalId = null;
             isBreak = false;
+            studyTime = data.studyTime;
             minutes = studyTime;
             seconds = 0;
             self.postMessage({ type: 'update', minutes, seconds });

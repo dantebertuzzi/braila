@@ -5,7 +5,7 @@ import { PNG } from 'pngjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SRC_CSS = join(__dirname, '..', 'src', 'styles', 'bat.css');
-const OUT_PNG = join(__dirname, '..', 'public', 'bat-sprite.png');
+const OUT_PNG = join(__dirname, '..', 'src', 'styles', 'bat-sprite.png');
 const PIXEL_SCALE = 4; // matches the original `.bat { transform: scale(4) ... }`
 
 const css = readFileSync(SRC_CSS, 'utf8');

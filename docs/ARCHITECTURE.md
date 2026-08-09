@@ -33,13 +33,41 @@ arquivo CSS de ~143 KB minificado e forçava o navegador a recalcular centenas
 de `box-shadow` a cada troca de frame.
 
 `scripts/build-bat-sprite.mjs` faz o parsing desses keyframes uma única vez e
-rasteriza cada frame num sprite sheet PNG (`public/bat-sprite.png`, 8 frames,
-~11 KB). O CSS final só precisa de uma animação de `background-position` com
-`steps(8)` — resultado: CSS final caiu de 142,9 KB para 4,23 KB.
+rasteriza cada frame num sprite sheet PNG (`src/styles/bat-sprite.png`, 8
+frames, ~11 KB), referenciado por `bat.css` com uma `url()` relativa para que
+o Vite gerencie o hash/caminho final do arquivo (funciona em qualquer
+subpath de deploy). O CSS final só precisa de uma animação de
+`background-position` com `steps(8)` — resultado: CSS final caiu de 142,9 KB
+para 4,23 KB.
 
 Se algum dia o desenho do morcego mudar, edite os keyframes de origem (git
 history do commit que introduziu o sprite tem a versão anterior em
 `box-shadow`) e rode `node scripts/build-bat-sprite.mjs` de novo.
+
+## Deploy e caminhos de asset
+
+O site é publicado no GitHub Pages sob um subpath (`/braila/`), não na raiz do
+domínio. Por isso:
+
+- `vite.config.js` usa `base: './'` (caminhos relativos), para que o HTML/JS/CSS
+  gerado funcione tanto em `usuario.github.io/braila/` quanto num domínio
+  próprio na raiz, sem precisar hardcodar o nome do repositório.
+- Assets referenciados de dentro de JS ou CSS (áudio do `SoundPlayer`, sprite
+  do morcego) ficam dentro de `src/` e são importados como módulo
+  (`import beepUrl from './sounds/beep.mp3'`, `url('./bat-sprite.png')`) em vez
+  de morar em `public/` com caminho absoluto (`/audio/beep.mp3`). Caminhos
+  absolutos começando com `/` só funcionam quando o site está na raiz do
+  domínio; como módulo, o Vite resolve e reescreve o caminho final
+  corretamente para qualquer subpath. `public/` fica reservado para arquivos
+  que precisam existir com nome fixo e não são referenciados por import (ex.:
+  `favicon.png`, referenciado via caminho relativo simples no `index.html`).
+- O deploy é feito pelo workflow `.github/workflows/deploy.yml`: builda com
+  `npm run build` e publica `dist/` via GitHub Actions (Pages configurado com
+  source "GitHub Actions", não mais "Deploy from a branch"). Servir o
+  `index.html` de código-fonte direto do branch `main` **não funciona** — ele
+  depende de `import './styles/*.css'` dentro de JS, uma convenção que só o
+  bundler entende; o navegador, sem build, tentaria carregar CSS como se
+  fosse JavaScript e falharia.
 
 ## Decisões que ficaram de fora de propósito
 

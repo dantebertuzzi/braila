@@ -1,6 +1,9 @@
+import beepUrl from './sounds/beep.mp3';
+import wolfUrl from './sounds/wolf.mp3';
+
 const SOUND_FILES = {
-  beep: '/audio/beep.mp3',
-  wolf: '/audio/wolf.mp3',
+  beep: beepUrl,
+  wolf: wolfUrl,
 };
 
 export class SoundPlayer {

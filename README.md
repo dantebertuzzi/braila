@@ -33,7 +33,7 @@ npm test           # roda a suíte de testes unitários (Vitest)
 ## Estrutura
 
 ```
-public/            assets estáticos servidos como estão (favicon, áudio, sprite do morcego)
+public/            assets estáticos com caminho fixo, servidos como estão (favicon)
 src/
   main.js          ponto de entrada: instancia PixelSky e TimerController
   timer/           regra de negócio do timer (controller, Web Worker, constantes)
@@ -45,3 +45,11 @@ tests/unit/        testes unitários (Vitest)
 ```
 
 Mais detalhes de arquitetura e decisões de design em [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+## Deploy
+
+Publicado no GitHub Pages a partir do build (`dist/`) via
+`.github/workflows/deploy.yml`, disparado a cada push em `main`. **O site
+nunca deve ser servido a partir do código-fonte bruto do repositório** — o
+app depende do processamento do Vite (imports de CSS dentro de JS, resolução
+de assets) para funcionar.

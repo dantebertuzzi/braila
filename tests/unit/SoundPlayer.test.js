@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SoundPlayer } from '../../src/audio/SoundPlayer.js';
+import beepUrl from '../../src/audio/sounds/beep.mp3';
+import wolfUrl from '../../src/audio/sounds/wolf.mp3';
 
 describe('SoundPlayer', () => {
   let audioInstances;
@@ -24,13 +26,13 @@ describe('SoundPlayer', () => {
     new SoundPlayer();
 
     const srcs = audioInstances.map((a) => a.src);
-    expect(srcs).toContain('/audio/beep.mp3');
-    expect(srcs).toContain('/audio/wolf.mp3');
+    expect(srcs).toContain(beepUrl);
+    expect(srcs).toContain(wolfUrl);
   });
 
   it('play() rewinds and plays the requested sound', () => {
     const player = new SoundPlayer();
-    const beep = audioInstances.find((a) => a.src === '/audio/beep.mp3');
+    const beep = audioInstances.find((a) => a.src === beepUrl);
     beep.currentTime = 5;
 
     player.play('beep');
